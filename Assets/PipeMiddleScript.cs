@@ -2,16 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpaceshipScript : MonoBehaviour
+public class PipeMiddleScript : MonoBehaviour
 {
-    public Rigidbody2D myRigidbody;
-    public float jetStrength;
+    //Create a reference to logic script
     public LogicScript logic;
-    public bool spaceshipIsAlive = true;
 
     // Start is called before the first frame update
     void Start()
     {
+
         //Sets the reference to the GameObject with the tag "Logic" that was added earlier, and gets the Logic Script from that object.
         logic = GameObject.FindGameObjectWithTag("Logic").GetComponent<LogicScript>();
     }
@@ -19,16 +18,15 @@ public class SpaceshipScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) == true && spaceshipIsAlive)
-        {
-            myRigidbody.velocity = Vector2.up * jetStrength;
-        }
-
+        
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        logic.gameOver();
-        spaceshipIsAlive = false;
+        //Checks if the spaceship is on the correct layer, and ensures that only when the spaceship crosses through, the score is incremented
+        if (collision.gameObject.layer == 3)
+        {
+            logic.addScore(1);
+        }
     }
 }
